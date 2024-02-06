@@ -104,4 +104,45 @@ public class EmployeeController {
         return Result.success(pageReuslt);
     }
 
+    /**
+     * 啟用禁用員工帳號
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("啟用禁用員工帳號")
+    public Result startOrStop(@PathVariable("status") Integer status, Long id){
+        // @PathVariable 名字一樣可以省略variable
+        // 非查詢類接口不用泛型
+        log.info("啟用禁用員工帳號：{},{}",status,id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
+
+    }
+
+    /**
+     * 根據員工ID查詢信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根據員工ID查詢信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * 編輯員工信息
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("編輯員工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("編輯員工信息:{}",employeeDTO);
+        EmployeeService.update(employeeDTO);
+        return Result.success();
+    }
 }

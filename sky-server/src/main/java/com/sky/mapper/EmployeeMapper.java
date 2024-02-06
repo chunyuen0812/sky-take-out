@@ -10,6 +10,15 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface EmployeeMapper {
 
+
+    /**
+     * 根據員工ID查詢信息
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Long id);
+
     /**
      * 分頁查詢
      * @param employeePageQueryDTO
@@ -34,4 +43,10 @@ public interface EmployeeMapper {
             "values" +
             "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})")
     void insert(Employee employee);
+
+    /**
+     * 根據主鍵動態修改屬性
+     * @param employee
+     */
+    void update(Employee employee);
 }
