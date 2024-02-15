@@ -100,8 +100,8 @@ public class EmployeeController {
     @ApiOperation("員工分頁查詢")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("員工分頁查詢,param:{}", employeePageQueryDTO);
-        PageResult pageReuslt = employeeService.pageQuery(employeePageQueryDTO);
-        return Result.success(pageReuslt);
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
     }
 
     /**
@@ -142,7 +142,7 @@ public class EmployeeController {
     @ApiOperation("編輯員工信息")
     public Result update(@RequestBody EmployeeDTO employeeDTO){
         log.info("編輯員工信息:{}",employeeDTO);
-        EmployeeService.update(employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }
