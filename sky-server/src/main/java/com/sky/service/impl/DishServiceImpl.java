@@ -50,7 +50,6 @@ public class DishServiceImpl implements DishService {
         // insert one new row in dish table
         dishMapper.insert(dish);
 
-
         Long dishId = dish.getId();
         // insert n new row in flavor table
         List<DishFlavor> flavors = dishDTO.getFlavors();
@@ -60,9 +59,6 @@ public class DishServiceImpl implements DishService {
             });
             dishFlavorMapper.insertBatch(flavors);
         }
-
-
-
     }
 
     /**
@@ -98,15 +94,50 @@ public class DishServiceImpl implements DishService {
             // bind to set, cannot delete
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
-
-
-        for (Long id : ids) {
-            dishMapper.deleteById(id);
-            dishFlavorMapper.deleteByDishId(id);
-        }
-
-
-
+//        for (Long id : ids) {
+//            dishMapper.deleteById(id);
+//            dishFlavorMapper.deleteByDishId(id);
+//        }
+        dishMapper.deleteByIds(ids);
+        dishFlavorMapper.deleteByDishIds(ids);
 
     }
+
+
+    public DishVO getByIdwithFlavor(Long id){
+        // get dish by id
+        Dish dish = dishMapper.getById(id);
+
+        // get flavor by id
+        List<DishFlavor> dishFlavor = dishFlavorMapper.getByDishId(id);
+
+        DishVO dishVO = new DishVO();
+
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavor);
+
+        return dishVO;
+    }
+
+    public void updateWithFlavor(DishDTO dishDTO){
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+
+        // update basic info
+        dishMapper.update(dish);
+
+        // delete old flavor info
+        dishFlavorMapper.deleteByDishId(dish.getId());
+
+        // update new flavor info
+        List<DishFlavor> dishFlavors = dishDTO.getFlavors();
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && flavors.size() > 0){
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
+            dishFlavorMapper.insertBatch(flavors);
+        }
+    }
+
 }
