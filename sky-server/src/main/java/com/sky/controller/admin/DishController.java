@@ -1,7 +1,10 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Category;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -69,6 +72,14 @@ public class DishController {
         log.info("update dish: {}",dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("get dish by category")
+    public Result<List> getListByCategory(Long categoryId){
+        log.info("get dish by category: {}", categoryId);
+        List<Dish> dishList = dishService.getListByCategory(categoryId);
+        return Result.success(dishList);
     }
 
 
