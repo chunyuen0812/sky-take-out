@@ -25,9 +25,6 @@ public interface SetmealMapper {
     Integer countByCategoryId(Long id);
 
 
-    @Insert("insert into setmeal (id, category_id, name, price, status, description, image,  create_time, update_time, create_user, update_user)" +
-            "values" +
-            "(#{id},#{categoryId},#{name},#{price},#{status},#{description},#{image}, #{createTime},#{updateTime},#{createUser},#{updateUser})")
     @AutoFill(value = OperationType.INSERT)
     void insert(Setmeal setmeal);
 
@@ -39,4 +36,7 @@ public interface SetmealMapper {
 
 
     void deleteByIds(List<Long> ids);
+
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Setmeal setmeal);
 }

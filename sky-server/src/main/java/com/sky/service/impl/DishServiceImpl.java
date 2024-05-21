@@ -8,6 +8,7 @@ import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Employee;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -130,7 +131,6 @@ public class DishServiceImpl implements DishService {
         dishFlavorMapper.deleteByDishId(dish.getId());
 
         // update new flavor info
-        List<DishFlavor> dishFlavors = dishDTO.getFlavors();
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (flavors != null && flavors.size() > 0){
             flavors.forEach(dishFlavor -> {
@@ -143,6 +143,15 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<Dish> getListByCategory(Long categoryId){
         return dishMapper.getByCategory(categoryId);
+    }
+
+    public void updateStatus(Integer status, Long id){
+        Dish dish = Dish.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+        dishMapper.update(dish);
     }
 
 }
